@@ -8,6 +8,8 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="main.css">
   <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+  <script type="text/javascript" src="./components/pokemon/pokemon.js"></script>
+  <script type="text/javascript" src="./components/pokemon/list.js"></script>
   <script type="text/javascript" src="main.js"></script>
 
   <title>PokéCatcher v1.0</title>
@@ -18,6 +20,7 @@
     <p>Choose your Pokémon, encounter another one and try and catch it!<br>
     If you succeed, the pokémon you caught will be sent to your pokéball (your phone)</p>
   </header>
+
   <section class="formControls container">
     <aside class="phone">
       <label for="phoneNumber">
@@ -34,7 +37,95 @@
         <input type="text" id="minPokemon" placeholder="Starting Pokémon #">-
         <input type="text" id="maxPokemon" placeholder="Ending Pokémon #">
       </label>
+      <button type="button" class="btn btn-primary btn-search">Search</button>
     </aside>
+  </section>
+
+  <section class="container" id="searchResults">
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
+    <div class="pokemon">
+      <div class="image">
+        <!-- <div class="imageSprite" style="background-image: url(https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png);"></div> -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" alt="bulbasaur">
+      </div>
+      <div class="name">Bulbasaur</div>
+    </div>
   </section>
 </body>
 </html>

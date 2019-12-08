@@ -21,3 +21,22 @@ text-align:center;
   border-bottom: 1px solid black;
   background-color: lavenderblush
 }
+#searchResults{
+  text-align: center;
+  /*
+  will want to make this fixed, with scroll bar
+  height: 10vh;
+
+  */
+
+}
+.pokemon {
+  background-color:whitesmoke;
+  width: 100px;
+  border: 1px solid black;
+  margin: 5px;
+  display: inline-block;
+}
+.pokemon .name {
+  background-color: lightgrey;
+}
