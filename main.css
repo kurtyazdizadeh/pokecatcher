@@ -1,0 +1,23 @@
+html{
+	font-size: 2vmin;
+}
+body{
+	height: 100vh;
+  background-color: lavender;
+}
+header{
+  margin: auto;
+  text-align: center;
+  display: block;
+}
+.formControls{
+text-align:center;
+}
+.phone {
+  border-bottom: 1px solid black;
+}
+.pokeSearch {
+  padding: .5%;
+  border-bottom: 1px solid black;
+  background-color: lavenderblush
+}

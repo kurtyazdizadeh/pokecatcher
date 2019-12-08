@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="main.css">
+  <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+
+  <title>PokéCatcher v1.0</title>
+</head>
+<body>
+  <header class="container">
+    <img src="./images/title.png" alt="title" class="img-fluid">
+    <p>Choose your Pokémon, encounter another one and try and catch it!<br>
+    If you succeed, the pokémon you caught will be sent to your pokéball (your phone)</p>
+  </header>
+  <section class="formControls container">
+    <aside class="phone">
+      <label for="phoneNumber">
+        Phone Number:
+        <input type="text" id="phoneNumber" placeholder="555-555-5555">
+      </label>
+    </aside>
+    <aside class="pokeSearch">
+      <label for="name">
+        Pokémon Name:
+        <input type="text" id="name">
+      </label>
+      <label>Pokémon between (pokédex #):
+        <input type="text" id="minPokemon" placeholder="Starting Pokémon #">-
+        <input type="text" id="maxPokemon" placeholder="Ending Pokémon #">
+      </label>
+    </aside>
+  </section>
+</body>
+</html>
