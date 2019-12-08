@@ -23,16 +23,11 @@ text-align:center;
 }
 #searchResults{
   text-align: center;
-  /*
-  will want to make this fixed, with scroll bar
-  height: 10vh;
-
-  */
-
+  height: 54vh;
 }
 .pokemon {
   background-color:whitesmoke;
-  width: 100px;
+  /* width: 100px; */
   border: 1px solid black;
   margin: 5px;
   display: inline-block;

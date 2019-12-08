@@ -7,10 +7,11 @@ function initializeApp(){
     phone: "#phoneNumber",
     minPokemon: "#minPokemon",
     maxPokemon: "#maxPokemon",
+    name: "#name",
     searchButton: ".btn-search",
     searchResults: "#searchResults"
   })
 
- // list.addEventListeners();
+  list.addEventListeners();
   list.getPokemonFromServer();
 }
