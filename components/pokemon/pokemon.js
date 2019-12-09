@@ -4,7 +4,6 @@ class Pokemon {
     this.processDetailsFromServer = this.processDetailsFromServer.bind(this);
     this.failedDetailsFromServer = this.failedDetailsFromServer.bind(this);
 
-
     this.callbacks = callbacks;
     this.data = data;
     this.domElements = {
@@ -17,7 +16,7 @@ class Pokemon {
   renderListItem(){
     var capitalize = (str) => str.charAt(0).toUpperCase()+str.slice(1);
 
-    var $pokemon  = this.domElements.pokemon  = $("<div>", { class: "pokemon" });
+    var $pokemon  = this.domElements.pokemon  = $("<div>", { class: "pokemon", id: this.data.id });
     var $image    = this.domElements.image    = $("<img>", { src: this.data.sprites.front_default, alt: this.data.name });
     var $name     = this.domElements.name     = $("<div>", { class: "name", text: capitalize(this.data.name) });
 
@@ -39,6 +38,15 @@ class Pokemon {
   }
   processDetailsFromServer(response){
     this.data.sprites = response.sprites;
+    this.data.stats = {};
+    this.data.stats.hp = response.stats[5].stat;
+    this.data.stats.hp.baseStat = response.stats[5].base_stat;
+    this.data.stats.attack = response.stats[4].stat;
+    this.data.stats.attack.baseStat = response.stats[4].base_stat;
+    this.data.stats.defense = response.stats[3].stat;
+    this.data.stats.defense.baseStat = response.stats[3].base_stat;
+    this.data.stats.baseXP = response.base_experience;
+    this.data.types = response.types;
   }
   failedDetailsFromServer(xhr){
     console.error("failedDetailsFromServer error: ", xhr);

@@ -2,7 +2,7 @@ class List {
   constructor(elementConfig){
     this.processPokemonFromServer = this.processPokemonFromServer.bind(this);
     this.handleFilterAndSorting = this.handleFilterAndSorting.bind(this);
-    //this.handlePokemonClick = this.handlePokemonClick.bind(this);
+    this.handlePokemonClick = this.handlePokemonClick.bind(this);
 
 
     this.pokemonList = [];
@@ -15,12 +15,16 @@ class List {
       searchResults: $(elementConfig.searchResults)
     };
 
+    this.playerPokemon = {};
+    this.opponentPokemon = {};
+
   }
   addEventListeners(){
     this.domElements.minPokemon.keydown(this.checkKeydown);
     this.domElements.maxPokemon.keydown(this.checkKeydown);
     this.domElements.searchButton.click(this.handleFilterAndSorting);
   }
+
   getPokemonFromServer(){
     $.ajax({
       url: `https://pokeapi.co/api/v2/pokemon/?limit=1000`,
@@ -49,8 +53,14 @@ class List {
     )
     this.pokemonList.push(pokemon);
     return this.pokemonList.length;
-
   }
+
+  // getEverythingFromServer() {
+  //   Promise.all(this.pokemonList.forEach(v => v.getDetailsFromServer))
+  //     .then(() => console.log("Pokemon Details Loaded"))
+  //     .catch(() => console.log("Promises failed"))
+  // }
+
   checkKeydown(e) {
     switch (e.target.id) {
       case "minPokemon":
@@ -108,9 +118,19 @@ class List {
       .append(tiles);
   }
 
-  handlePokemonClick(){
-   //this will eventually handle the click
-   //that represents the selection the user makes from list
-   console.log("click goes here", this.textContent);
+  handlePokemonClick(pokemon){
+    var randomNum = Math.floor(Math.random() * 800) + 1;
+    console.log(randomNum);
+
+    this.playerPokemon = this.pokemonList.find( (v) => v.data.id == pokemon.currentTarget.id )
+    this.opponentPokemon = this.pokemonList.find( (v) => v.data.id == randomNum);
+
+    if (this.opponentPokemon.data.hasOwnProperty('stats') == false){
+      this.opponentPokemon.getDetailsFromServer();
+    }
+
+    console.log("Player pokemon is: ", this.playerPokemon);
+    console.log("Opponent pokemon is: ", this.opponentPokemon);
+
   }
 }
