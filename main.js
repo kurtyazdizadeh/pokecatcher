@@ -10,7 +10,8 @@ function initializeApp(){
     name: "#name",
     searchButton: ".btn-search",
     searchResults: "#searchResults",
-    modal: "#myModal"
+    modalContainer: ".modalContainer",
+    modal: "#battleModal"
   })
 
   list.addEventListeners();

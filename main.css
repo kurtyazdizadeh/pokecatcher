@@ -27,13 +27,13 @@ text-align:center;
 }
 .pokemon {
   background-color:whitesmoke;
-  /* width: 100px; */
   border: 1px solid black;
   margin: 5px;
   display: inline-block;
 }
 .pokemon .name {
   background-color: lightgrey;
+  text-align: center;
 }
 .modal-body {
   display: flex;

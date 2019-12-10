@@ -12,6 +12,7 @@ class List {
       name: $(elementConfig.name),
       searchButton: $(elementConfig.searchButton),
       searchResults: $(elementConfig.searchResults),
+      modalContainer: $(elementConfig.modalContainer),
       modal: $(elementConfig.modal)
     };
 
@@ -144,10 +145,9 @@ class List {
 
   handlePokemonClick(pokemon){
     var randomNum = Math.floor(Math.random() * 800) + 1;
-    console.log(randomNum);
 
     var playerPokemon = this.pokemonList.find( (v) => v.data.id == pokemon.currentTarget.id );
-    var opponentPokemon = this.pokemonList.find( (v) => v.data.id == randomNum);
+    var opponentPokemon = this.pokemonList.find( (v) => v.data.id == randomNum );
 
     playerPokemon.getDetailsFromServer();
     opponentPokemon.getDetailsFromServer();
@@ -161,6 +161,7 @@ class List {
     console.log("Opponent pokemon is: ", opponentPokemon);
 
     this.domElements.modal.modal();
+
   }
 
   createBattle(playerPokemon, opponentPokemon){
