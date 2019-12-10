@@ -9,7 +9,8 @@ function initializeApp(){
     maxPokemon: "#maxPokemon",
     name: "#name",
     searchButton: ".btn-search",
-    searchResults: "#searchResults"
+    searchResults: "#searchResults",
+    modal: "#myModal"
   })
 
   list.addEventListeners();

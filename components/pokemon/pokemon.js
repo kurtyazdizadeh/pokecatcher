@@ -16,9 +16,9 @@ class Pokemon {
   renderListItem(){
     var capitalize = (str) => str.charAt(0).toUpperCase()+str.slice(1);
 
-    var $pokemon  = this.domElements.pokemon  = $("<div>", { class: "pokemon", id: this.data.id });
-    var $image    = this.domElements.image    = $("<img>", { src: this.data.sprites.front_default, alt: this.data.name });
-    var $name     = this.domElements.name     = $("<div>", { class: "name", text: capitalize(this.data.name) });
+    var $pokemon = this.domElements.pokemon = $("<div>", { class: "pokemon", id: this.data.id });
+    var $image   = this.domElements.image   = $("<img>", { src: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${this.data.id}.png`, alt: this.data.name });
+    var $name    = this.domElements.name    = $("<div>", { class: "name", text: capitalize(this.data.name) });
 
     $pokemon.click(this.callbacks.click);
     $pokemon.append($image, $name);

@@ -3,28 +3,39 @@ class List {
     this.processPokemonFromServer = this.processPokemonFromServer.bind(this);
     this.handleFilterAndSorting = this.handleFilterAndSorting.bind(this);
     this.handlePokemonClick = this.handlePokemonClick.bind(this);
+    this.handleEnter = this.handleEnter.bind(this);
 
-
-    this.pokemonList = [];
     this.domElements = {
       phone: $(elementConfig.phone),
       minPokemon: $(elementConfig.minPokemon),
       maxPokemon: $(elementConfig.maxPokemon),
       name: $(elementConfig.name),
       searchButton: $(elementConfig.searchButton),
-      searchResults: $(elementConfig.searchResults)
+      searchResults: $(elementConfig.searchResults),
+      modal: $(elementConfig.modal)
     };
 
-    this.playerPokemon = {};
-    this.opponentPokemon = {};
+    this.pokemonList = [];
+
+    this.battle = {};
+
+    this.firstLoad = true;
 
   }
   addEventListeners(){
     this.domElements.minPokemon.keydown(this.checkKeydown);
     this.domElements.maxPokemon.keydown(this.checkKeydown);
     this.domElements.searchButton.click(this.handleFilterAndSorting);
-  }
+    this.domElements.minPokemon.keyup(this.handleEnter);
+    this.domElements.maxPokemon.keyup(this.handleEnter);
+    this.domElements.name.keyup(this.handleEnter);
 
+  }
+  handleEnter(e){
+    if (e.keyCode === 13){
+      this.handleFilterAndSorting();
+    }
+  }
   getPokemonFromServer(){
     $.ajax({
       url: `https://pokeapi.co/api/v2/pokemon/?limit=1000`,
@@ -34,7 +45,8 @@ class List {
       .fail(this.failedPokemonFromServer);
   }
   processPokemonFromServer(response){
-    this.loadPokemon(response.results)
+    this.loadPokemon(response.results);
+
   }
   failedPokemonFromServer(xhr){
     console.error("failedPokemonFromServer error: ", xhr);
@@ -42,24 +54,34 @@ class List {
 
   loadPokemon(pokemonArray){
     pokemonArray.forEach(v => this.addPokemon(v));
+
+    //logic check to render select pokemon to page on first load
+    if (this.firstLoad) {
+      this.initializePage()
+    }
   }
   addPokemon(pokemonData){
-    var pokemon = new Pokemon( pokemonData, { click: this.handlePokemonClick });
+    var pokemon = new Pokemon( pokemonData,
+        { click: this.handlePokemonClick,
+          modal: this.handleModal
+         });
     pokemon.data.id = pokemon.data.url.slice(
         //some ID numbers don't match index+1 (ex: this.pokemonList[930])
         //this ensures it gets the right ID to get details from API later
         pokemon.data.url.lastIndexOf("n/")+2,
         pokemon.data.url.length-1
     )
-    this.pokemonList.push(pokemon);
+    this.pokemonList.push(pokemon)
     return this.pokemonList.length;
   }
-
-  // getEverythingFromServer() {
-  //   Promise.all(this.pokemonList.forEach(v => v.getDetailsFromServer))
-  //     .then(() => console.log("Pokemon Details Loaded"))
-  //     .catch(() => console.log("Promises failed"))
-  // }
+  initializePage(){
+    this.firstLoad = false;
+    var firstThirty = [];
+    for (var i = 0; i < 30; i++) {
+      firstThirty.push(this.pokemonList[i]);
+    }
+    this.render(firstThirty);
+  }
 
   checkKeydown(e) {
     switch (e.target.id) {
@@ -105,13 +127,15 @@ class List {
         pokemon.data.id <= maxPokemon
       )
     }
+    //if all fields are empty, only display initial page (first 25 pokemon)
+    if (!name && !minPokemon && !maxPokemon){
+      return this.initializePage();
+    }
 
     this.render(filteredList);
   }
 
   render(pokemonList) {
-    pokemonList.forEach(pokemon => pokemon.getDetailsFromServer());
-
     var tiles = pokemonList.map(pokemon => pokemon.renderListItem());
     this.domElements.searchResults
       .empty()
@@ -122,15 +146,24 @@ class List {
     var randomNum = Math.floor(Math.random() * 800) + 1;
     console.log(randomNum);
 
-    this.playerPokemon = this.pokemonList.find( (v) => v.data.id == pokemon.currentTarget.id )
-    this.opponentPokemon = this.pokemonList.find( (v) => v.data.id == randomNum);
+    var playerPokemon = this.pokemonList.find( (v) => v.data.id == pokemon.currentTarget.id );
+    var opponentPokemon = this.pokemonList.find( (v) => v.data.id == randomNum);
 
-    if (this.opponentPokemon.data.hasOwnProperty('stats') == false){
-      this.opponentPokemon.getDetailsFromServer();
+    playerPokemon.getDetailsFromServer();
+    opponentPokemon.getDetailsFromServer();
+
+    if (opponentPokemon.domElements.name === null) {
+      opponentPokemon.renderListItem();
     }
+    this.createBattle(playerPokemon, opponentPokemon);
 
-    console.log("Player pokemon is: ", this.playerPokemon);
-    console.log("Opponent pokemon is: ", this.opponentPokemon);
+    console.log("Player pokemon is: ", playerPokemon);
+    console.log("Opponent pokemon is: ", opponentPokemon);
 
+    this.domElements.modal.modal();
+  }
+
+  createBattle(playerPokemon, opponentPokemon){
+     this.battle = new Battle(playerPokemon, opponentPokemon);
   }
 }
