@@ -31,6 +31,9 @@ text-align:center;
   margin: 5px;
   display: inline-block;
 }
+.pokemon img {
+  height: 96px;
+}
 .pokemon .name {
   background-color: lightgrey;
   text-align: center;
@@ -48,7 +51,7 @@ text-align:center;
   display: none;
 }
 .modal-body .shake {
-  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  animation: shake 0.25s cubic-bezier(.36,.07,.19,.97) both;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000px;
@@ -58,16 +61,13 @@ text-align:center;
   10%, 90% {
     transform: translate3d(-1px, 0, 0);
   }
-
   20%, 80% {
     transform: translate3d(2px, 0, 0);
   }
-
-  30%, 50%, 70% {
+  30%, 65%, {
     transform: translate3d(-4px, 0, 0);
   }
-
-  40%, 60% {
+  50% {
     transform: translate3d(4px, 0, 0);
   }
 }

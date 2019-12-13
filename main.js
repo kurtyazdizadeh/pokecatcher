@@ -10,7 +10,7 @@ function initializeApp(){
     name: "#name",
     searchButton: ".btn-search",
     searchResults: "#searchResults",
-    modalContainer: ".modalContainer",
+    modalDialog: ".modal-dialog",
     modal: "#battleModal"
   })
 

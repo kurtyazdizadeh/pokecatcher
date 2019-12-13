@@ -13,15 +13,23 @@ class List {
       searchButton: $(elementConfig.searchButton),
       searchResults: $(elementConfig.searchResults),
       modalContainer: $(elementConfig.modalContainer),
+      modalDialog: $(elementConfig.modalDialog),
       modal: $(elementConfig.modal)
     };
 
     this.pokemonList = [];
-
     this.battle = {};
-
     this.firstLoad = true;
 
+    var textMsgCallbacks = {
+      send: this.handleTextClick
+    };
+    this.textMsg= new Text(textMsgCallbacks);
+
+
+  }
+  authenticate(){
+    this.textMsg.setUp();
   }
   addEventListeners(){
     this.domElements.minPokemon.keydown(this.checkKeydown);
@@ -47,15 +55,12 @@ class List {
   }
   processPokemonFromServer(response){
     this.loadPokemon(response.results);
-
   }
   failedPokemonFromServer(xhr){
     console.error("failedPokemonFromServer error: ", xhr);
   }
-
   loadPokemon(pokemonArray){
     pokemonArray.forEach(v => this.addPokemon(v));
-
     //logic check to render select pokemon to page on first load
     if (this.firstLoad) {
       this.initializePage()
@@ -128,7 +133,7 @@ class List {
         pokemon.data.id <= maxPokemon
       )
     }
-    //if all fields are empty, only display initial page (first 25 pokemon)
+    //if all fields are empty, only display initial page (first 30 pokemon)
     if (!name && !minPokemon && !maxPokemon){
       return this.initializePage();
     }
@@ -144,27 +149,36 @@ class List {
   }
 
   handlePokemonClick(pokemon){
-    var randomNum = Math.floor(Math.random() * 800) + 1;
+    var randomNum = Math.floor(Math.random() *this.pokemonList.length);
 
     var playerPokemon = this.pokemonList.find( (v) => v.data.id == pokemon.currentTarget.id );
-    var opponentPokemon = this.pokemonList.find( (v) => v.data.id == randomNum );
-
-    playerPokemon.getDetailsFromServer();
-    opponentPokemon.getDetailsFromServer();
+    var opponentPokemon = this.pokemonList[randomNum];
 
     if (opponentPokemon.domElements.name === null) {
       opponentPokemon.renderListItem();
     }
-    this.createBattle(playerPokemon, opponentPokemon);
 
-    console.log("Player pokemon is: ", playerPokemon);
-    console.log("Opponent pokemon is: ", opponentPokemon);
+    // console.log("Player pokemon is: ", playerPokemon);
+    // console.log("Opponent pokemon is: ", opponentPokemon);
 
-    this.domElements.modal.modal();
+    Promise.all([playerPokemon.getDetailsFromServer(), opponentPokemon.getDetailsFromServer()])
+      .then(() => this.createBattle(playerPokemon, opponentPokemon))
+      .catch((err1, err2) => console.log("Promises from Pokemon.getDetailsFromServer failed", err1, err2));
 
   }
 
   createBattle(playerPokemon, opponentPokemon){
-     this.battle = new Battle(playerPokemon, opponentPokemon);
+    this.battle = new Battle(playerPokemon, opponentPokemon);
+    this.renderBattleModal();
+  }
+  renderBattleModal(){
+    this.domElements.modalDialog
+      .empty()
+      .append(this.battle.renderModal());
+    this.domElements.modal.modal();
+  }
+
+  handleTextClick(phoneNumber) {
+    this.textMsg.sendText(phoneNumber, `Congratulations! You caught ${this.opponentPokemon.data.name}!`, this.opponentPokemon.data.id);
   }
 }

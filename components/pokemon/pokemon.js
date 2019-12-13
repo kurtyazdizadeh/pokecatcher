@@ -17,7 +17,11 @@ class Pokemon {
     var capitalize = (str) => str.charAt(0).toUpperCase()+str.slice(1);
 
     var $pokemon = this.domElements.pokemon = $("<div>", { class: "pokemon", id: this.data.id });
-    var $image   = this.domElements.image   = $("<img>", { src: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${this.data.id}.png`, alt: this.data.name, onerror:"this.src='./images/pokeball.png'" });
+    var $image   = this.domElements.image   = $("<img>", {
+        src: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${this.data.id}.png`,
+        alt: this.data.name,
+        onerror:"this.src='./images/pokeball.png'"
+      });
     var $name    = this.domElements.name    = $("<div>", { class: "name", text: capitalize(this.data.name) });
 
     $pokemon.click(this.callbacks.click);
@@ -33,7 +37,7 @@ class Pokemon {
       dataType: "JSON"
     };
 
-    $.ajax(ajaxOptions)
+   return $.ajax(ajaxOptions)
       .done(this.processDetailsFromServer)
       .fail(this.failedDetailsFromServer)
   }
@@ -49,6 +53,9 @@ class Pokemon {
     this.data.stats.baseXP = response.base_experience;
     this.data.types = response.types;
     this.data.moves = response.moves;
+
+    console.log(this.data.moves);
+
   }
   failedDetailsFromServer(xhr){
     console.error("failedDetailsFromServer error: ", xhr);
