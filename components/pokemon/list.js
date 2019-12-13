@@ -4,6 +4,7 @@ class List {
     this.handleFilterAndSorting = this.handleFilterAndSorting.bind(this);
     this.handlePokemonClick = this.handlePokemonClick.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
+    this.handleTextClick = this.handleTextClick.bind(this);
 
     this.domElements = {
       phone: $(elementConfig.phone),
@@ -21,10 +22,7 @@ class List {
     this.battle = {};
     this.firstLoad = true;
 
-    var textMsgCallbacks = {
-      send: this.handleTextClick
-    };
-    this.textMsg= new Text(textMsgCallbacks);
+    this.textMsg= new Text(this.domElements.phone, {send: this.handleTextClick});
 
 
   }
@@ -179,6 +177,12 @@ class List {
   }
 
   handleTextClick(phoneNumber) {
-    this.textMsg.sendText(phoneNumber, `Congratulations! You caught ${this.opponentPokemon.data.name}!`, this.opponentPokemon.data.id);
+      console.log("proceeding to send text Ajax");
+      this.textMsg
+        .sendText(
+          phoneNumber,
+          `Congratulations! You caught ${this.battle.opponentPokemon.data.name}!`,
+          this.battle.opponentPokemon.data.id
+        );
   }
 }

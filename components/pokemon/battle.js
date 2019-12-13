@@ -4,11 +4,13 @@ class Battle {
    this.displayAttack = this.displayAttack.bind(this);
    this.processAttackFromServer = this.processAttackFromServer.bind(this);
    this.processAttackEffectivenessFromServer = this.processAttackEffectivenessFromServer.bind(this);
+   this.addButton = this.addButton.bind(this);
 
     this.playerPokemon = playerPokemon;
     this.opponentPokemon = opponentPokemon;
     this.attack = {};
     this.attackRating = "";
+
 
     this.domElements = {
       content: {},
@@ -18,6 +20,7 @@ class Battle {
       attack: {},
       footer: {},
       fightBtn: {},
+      catchBtn: {}
     };
   }
   renderModal(){
@@ -98,16 +101,35 @@ class Battle {
         text: "Fight!"
       });
         $fightBtn.click(this.displayAttack);
-    var $closeBtn = $("<button>", {
-      type: "button",
-      class: "btn btn-secondary",
-      "data-dismiss":"modal",
-      text: "Close" });
+    var $closeBtn =
+      $("<button>", {
+        type: "button",
+        class: "btn btn-secondary",
+        "data-dismiss":"modal",
+        text: "Close"
+      });
+    var $catchBtn = this.domElements.catchBtn =
+      $("<button>", {
+        type: "button",
+        class: "btn btn-success catch d-none",
+        "data-dismiss": "modal",
+        text: `Catch ${this.opponentPokemon.data.name}!`
+      });
+
+      $catchBtn.click(list.textMsg.handleSendClick);
+
+    var $tryAgainBtn = this.domElements.tryAgainBtn =
+      $("<button>", {
+        type: "button",
+        class: "btn btn-danger fail d-none",
+        "data-dismiss": "modal",
+        text: "Try Again!"
+      });
 
 
     $header.append($title, $close);
     $body.append($player, $versusText, $opponent, $attack);
-    $footer.append($fightBtn, $closeBtn);
+    $footer.append($catchBtn, $tryAgainBtn, $fightBtn, $closeBtn);
     $content.append($header, $body, $footer);
 
     return $content;
@@ -150,24 +172,24 @@ class Battle {
     var notVery = [];
     var opponentTypes = [];
 
-   if ( response.damage_relations.double_damage_to.length > 0){
+   if (response.damage_relations.double_damage_to.length > 0){
      response.damage_relations.double_damage_to.forEach(v => superAttack.push(v.name));
    }
-    if (response.damage_relations.half_damage_to.length > 0){
-      response.damage_relations.half_damage_to.forEach(v => notVery.push(v.name));
-    }
-    this.opponentPokemon.data.types.
-      forEach(v => opponentTypes.push(v.type.name));
+  if (response.damage_relations.half_damage_to.length > 0){
+    response.damage_relations.half_damage_to.forEach(v => notVery.push(v.name));
+  }
+  this.opponentPokemon.data.types.
+    forEach(v => opponentTypes.push(v.type.name));
 
     // console.log("super", superAttack, "not very", notVery, "opponent", opponentTypes);
-
     if (superAttack.filter( v => -1 !== opponentTypes.indexOf(v)).length > 0 ){
       this.attackRating = " It's SUPER effective!";
     }
-    if (notVery.filter(v => -1 !== opponentTypes.indexOf(v)) > 0 ) {
+    if (notVery.filter(v => -1 !== opponentTypes.indexOf(v)).length > 0) {
       this.attackRating = " It's not very effective...";
     }
 
+    console.log(this.attackRating)
 
   }
   failedAttackEffectivenessFromServer(xhr){
@@ -182,7 +204,32 @@ class Battle {
       "text-align":"center"
     });
 
-    setTimeout( () => this.domElements.player.addClass("shake"), 500);
+    setTimeout( () => this.domElements.player.addClass("shake"), 500 );
     setTimeout( () => this.domElements.opponent.addClass("shake") , 1000 );
+    setTimeout( this.addButton, 1500);
+  }
+  addButton() {
+    switch (this.attackRating) {
+      case "":
+      case " It's SUPER effective!":
+        this.domElements.catchBtn.removeClass("d-none");
+        break;
+      case " It's not very effective...":
+        this.domElements.tryAgainBtn.removeClass("d-none");
+        break;
+    }
+  }
+
+  handleTextClick(phoneNumber) {
+    if (this.domElements.phone.val()) {
+      this.textMsg
+        .sendText(
+          phoneNumber,
+          `Congratulations! You caught ${this.opponentPokemon.data.name}!`,
+          this.opponentPokemon.data.id
+        );
+    } else {
+      alert("Please enter your phone number before trying to battle pokémon!");
+    }
   }
 }

@@ -3,9 +3,8 @@ const TWILLIO = {
   token: "b62c37dd105962e7770a130222526256"
 }
 
-
 class Text {
-  constructor(callbacks){
+  constructor(phoneDom, callbacks){
     this.callbacks = callbacks;
     this.processAccountsFromServer = this.processAccountsFromServer.bind(this);
     this.failedAccountsFromServer = this.failedAccountsFromServer.bind(this);
@@ -14,7 +13,10 @@ class Text {
     this.sentTextMessage = this.sentTextMessage.bind(this);
     this.failedTextMessage = this.failedTextMessage.bind(this);
 
-    this.dom = {};
+    this.dom = {
+      phone: phoneDom
+    };
+
   }
   doAjax(request) {
     request.url = `https://api.twilio.com/2010-04-01/${request.url}`;
@@ -46,7 +48,7 @@ class Text {
       method: "POST",
       contentType: "application/x-www-form-urlencoded",
       data: {
-        To: phoneNumber,
+        To: `+1${phoneNumber.replace(/\D/g,"")}`,
         Body: body,
         From: "+19562846502",
         MediaUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`,
@@ -58,18 +60,21 @@ class Text {
   }
 
   sentTextMessage(response) {
-    console.log(response);
+    console.log("text message sent!", response);
   }
   failedTextMessage(xhr) {
-    console.error("unable to send text...");
+    console.error("unable to send text...", xhr);
   }
 
 
   handleSendClick(e) {
-    var phoneNumber = this.dom.input.val();
+    var phoneNumber = this.dom.phone.val();
 
-    this.callbacks.send(phoneNumber);
-
+    if (phoneNumber){
+      this.callbacks.send(phoneNumber);
+    } else {
+      alert("Please enter a phone number before trying to battle pokémon!");
+    }
   }
 
 }

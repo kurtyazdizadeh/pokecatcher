@@ -53,9 +53,6 @@ class Pokemon {
     this.data.stats.baseXP = response.base_experience;
     this.data.types = response.types;
     this.data.moves = response.moves;
-
-    console.log(this.data.moves);
-
   }
   failedDetailsFromServer(xhr){
     console.error("failedDetailsFromServer error: ", xhr);
