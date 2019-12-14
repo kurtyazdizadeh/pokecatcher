@@ -45,7 +45,7 @@ class List {
   }
   getPokemonFromServer(){
     $.ajax({
-      url: `https://pokeapi.co/api/v2/pokemon/?limit=1000`,
+      url: `https://pokeapi.co/api/v2/pokemon/?limit=807`,
       type: "GET",
       dataType: "JSON"
     }).done(this.processPokemonFromServer)

@@ -76,5 +76,4 @@ class Text {
       alert("Please enter a phone number before trying to battle pokémon!");
     }
   }
-
 }

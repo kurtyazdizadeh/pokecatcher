@@ -181,16 +181,12 @@ class Battle {
   this.opponentPokemon.data.types.
     forEach(v => opponentTypes.push(v.type.name));
 
-    // console.log("super", superAttack, "not very", notVery, "opponent", opponentTypes);
     if (superAttack.filter( v => -1 !== opponentTypes.indexOf(v)).length > 0 ){
       this.attackRating = " It's SUPER effective!";
     }
     if (notVery.filter(v => -1 !== opponentTypes.indexOf(v)).length > 0) {
       this.attackRating = " It's not very effective...";
     }
-
-    console.log(this.attackRating)
-
   }
   failedAttackEffectivenessFromServer(xhr){
     console.error("failedAttackEffectivenessFromServer: ", xhr);
