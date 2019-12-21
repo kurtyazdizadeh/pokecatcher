@@ -24,7 +24,6 @@ class List {
 
     this.textMsg= new Text(this.domElements.phone, {send: this.handleTextClick});
 
-
   }
   authenticate(){
     this.textMsg.setUp();
@@ -80,11 +79,8 @@ class List {
   }
   initializePage(){
     this.firstLoad = false;
-    var firstThirty = [];
-    for (var i = 0; i < 30; i++) {
-      firstThirty.push(this.pokemonList[i]);
-    }
-    this.render(firstThirty);
+    var firstTwentyFive = this.pokemonList.slice(0, 24);
+    this.render(firstTwentyFive);
   }
 
   checkKeydown(e) {
@@ -147,6 +143,10 @@ class List {
   }
 
   handlePokemonClick(pokemon){
+    if (this.domElements.phone.val() === ""){
+      alert("Please enter your phone number before selecting a pokémon!");
+      return;
+    }
     var randomNum = Math.floor(Math.random() *this.pokemonList.length);
 
     var playerPokemon = this.pokemonList.find( (v) => v.data.id == pokemon.currentTarget.id );

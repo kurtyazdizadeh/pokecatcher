@@ -69,11 +69,6 @@ class Text {
 
   handleSendClick(e) {
     var phoneNumber = this.dom.phone.val();
-
-    if (phoneNumber){
-      this.callbacks.send(phoneNumber);
-    } else {
-      alert("Please enter a phone number before trying to battle pokémon!");
-    }
+    this.callbacks.send(phoneNumber);
   }
 }
