@@ -67,7 +67,7 @@ class List {
     var pokemon = new Pokemon( pokemonData,
         { click: this.handlePokemonClick,
           modal: this.handleModal
-         });
+        });
     pokemon.data.id = pokemon.data.url.slice(
         //some ID numbers don't match index+1 (ex: this.pokemonList[930])
         //this ensures it gets the right ID to get details from API later

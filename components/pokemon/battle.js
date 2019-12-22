@@ -2,13 +2,17 @@ class Battle {
   constructor(playerPokemon, opponentPokemon){
    this.renderModal = this.renderModal.bind(this);
    this.displayAttack = this.displayAttack.bind(this);
+   this.displayAttackList = this.displayAttackList.bind(this);
    this.processAttackFromServer = this.processAttackFromServer.bind(this);
    this.processAttackEffectivenessFromServer = this.processAttackEffectivenessFromServer.bind(this);
    this.addButton = this.addButton.bind(this);
 
+   this.selectAttack = this.selectAttack.bind(this);
+
     this.playerPokemon = playerPokemon;
     this.opponentPokemon = opponentPokemon;
     this.attack = {};
+    this.attackList = this.getAttackList();
     this.attackRating = "";
 
 
@@ -17,12 +21,37 @@ class Battle {
         title: {},
         player: {},
         opponent: {},
+      attackArea: {},
       attack: {},
       footer: {},
       fightBtn: {},
       catchBtn: {}
     };
   }
+
+  getAttackList(){
+    var moveList = this.playerPokemon.data.moves;
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+      return array;
+    }
+
+    moveList = shuffle(moveList);
+    return moveList.slice(0,4);
+  }
+
+
   renderModal(){
     var capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -37,7 +66,7 @@ class Battle {
       $("<h5>", {
         class: "modal-title",
         id: "battleTitle",
-        text: `You chose ${this.playerPokemon.data.name}!`
+        text: `You chose ${this.playerPokemon.data.name}... a wild ${this.opponentPokemon.data.name} appears!`
       });
     var $close =
       $("<button>", {
@@ -88,11 +117,51 @@ class Battle {
     });
     $opponent.append($opponentImage, $opponentName);
 
+
+    var $attackArea = this.domElements.attackArea =
+      $("<div>", { class: "attackArea d-none", text: "Choose a move:" });
+
+    var $attackList = $("<ul>", { class: "attackList" });
+    var $attack1 =
+      $("<li>")
+        .append(
+          $("<button>", { class: "btn btn-secondary", text: capitalize(this.attackList[0].move.name) })
+        );
+    var $attack2 =
+      $("<li>")
+        .append(
+          $("<button>", { class: "btn btn-secondary", text: capitalize(this.attackList[1].move.name) })
+        );
+    var $attack3 =
+      $("<li>")
+        .append(
+          $("<button>", { class: "btn btn-secondary", text: capitalize(this.attackList[2].move.name) })
+      );
+    var $attack4 =
+        $("<li>")
+          .append(
+            $("<button>", { class: "btn btn-secondary", text: capitalize(this.attackList[3].move.name) })
+          );
+
+
+    $attackArea.append($attackList);
+    $attackList.append($attack1, $attack2, $attack3, $attack4);
+
+    $attack1.click(this.selectAttack);
+    $attack2.click(this.selectAttack);
+    $attack3.click(this.selectAttack);
+    $attack4.click(this.selectAttack);
+
+
     var $attack = this.domElements.attack =
     $("<div>", {
-      class: "attack",
-      text: `${this.playerPokemon.data.name} used ${this.selectAttack(this.playerPokemon.data.moves)}!`
+      class: "attack d-none"
     });
+
+
+
+
+
     var $footer = this.domElements.footer =
       $("<div>", { class: "modal-footer" });
     var $fightBtn = this.domElements.fightBtn =
@@ -100,7 +169,7 @@ class Battle {
         class: "btn btn-primary fight",
         text: "Fight!"
       });
-        $fightBtn.click(this.displayAttack);
+        $fightBtn.click(this.displayAttackList);
     var $closeBtn =
       $("<button>", {
         type: "button",
@@ -128,22 +197,26 @@ class Battle {
 
 
     $header.append($title, $close);
-    $body.append($player, $versusText, $opponent, $attack);
+    $body.append($player, $versusText, $opponent, $attackArea, $attack);
     $footer.append($catchBtn, $tryAgainBtn, $fightBtn, $closeBtn);
     $content.append($header, $body, $footer);
 
     return $content;
 
   }
-  selectAttack(moveList){
-    var attack = moveList[Math.floor(Math.random() * moveList.length)].move;
-    this.attack = attack;
-    this.getAttackType();
-    return attack.name;
+  selectAttack(e){
+  var attackName = e.target.innerText.toLowerCase();
+  var attackIndex = this.attackList.findIndex(v => v.move.name == attackName);
+
+  this.attack = this.attackList[attackIndex];
+
+  this.getAttackType();
+  this.displayAttack();
+
   }
   getAttackType(){
       $.ajax({
-        url: this.attack.url,
+        url: this.attack.move.url,
         method: "GET",
         dataType: "JSON"
       })
@@ -193,16 +266,16 @@ class Battle {
   }
 
   displayAttack(){
-    this.domElements.attack.append(this.attackRating);
-    this.domElements.attack.css({
-      "display":"block",
-      "flex-basis": "100%",
-      "text-align":"center"
-    });
+    this.domElements.attack.text(`${this.playerPokemon.data.name} used ${this.attack.move.name}! ${this.attackRating}`);
+    this.domElements.attack.removeClass("d-none");
 
     setTimeout( () => this.domElements.player.addClass("shake"), 500 );
     setTimeout( () => this.domElements.opponent.addClass("shake") , 1000 );
-    setTimeout( this.addButton, 1500);
+    setTimeout( this.addButton, 1500 );
+  }
+
+  displayAttackList(){
+    this.domElements.attackArea.removeClass("d-none");
   }
   addButton() {
     switch (this.attackRating) {

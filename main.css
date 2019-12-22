@@ -46,10 +46,32 @@ text-align:center;
 .modal-body .text {
   align-self: center;
 }
+
+.attackArea {
+  text-align: center;
+  /* display: none; */
+  flex-basis: 100%;
+}
+
+.attackList {
+  list-style-type: none;
+  text-align: left;
+  padding: inherit;
+  display: flex;
+  justify-content: center;
+}
+
+.attackList li {
+  margin: 0 3px;
+}
+
 .attack {
   margin-top: 2.5%;
-  display: none;
+  flex-basis: 100%;
+  text-align: center;
 }
+
+
 .modal-body .shake {
   animation: shake 0.25s cubic-bezier(.36,.07,.19,.97) both;
   transform: translate3d(0, 0, 0);
