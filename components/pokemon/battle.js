@@ -205,17 +205,16 @@ class Battle {
 
   }
   selectAttack(e){
-  var attackName = e.target.innerText.toLowerCase();
-  var attackIndex = this.attackList.findIndex(v => v.move.name == attackName);
+    var attackName = e.target.innerText.toLowerCase(); //change to .text() since we have jQuery
+    var attackIndex = this.attackList.findIndex(v => v.move.name == attackName);
 
-  this.attack = this.attackList[attackIndex];
+    this.attack = this.attackList[attackIndex];
 
-  this.getAttackType();
-  this.displayAttack();
+    this.getAttackType();
 
   }
   getAttackType(){
-      $.ajax({
+     return $.ajax({
         url: this.attack.move.url,
         method: "GET",
         dataType: "JSON"
@@ -260,13 +259,15 @@ class Battle {
     if (notVery.filter(v => -1 !== opponentTypes.indexOf(v)).length > 0) {
       this.attackRating = " It's not very effective...";
     }
+
+  this.displayAttack();
   }
   failedAttackEffectivenessFromServer(xhr){
     console.error("failedAttackEffectivenessFromServer: ", xhr);
   }
 
   displayAttack(){
-    this.domElements.attack.text(`${this.playerPokemon.data.name} used ${this.attack.move.name}! ${this.attackRating}`);
+    this.domElements.attack.text(`${this.playerPokemon.data.name} used ${this.attack.name}! ${this.attackRating}`);
     this.domElements.attack.removeClass("d-none");
 
     setTimeout( () => this.domElements.player.addClass("shake"), 500 );
