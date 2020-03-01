@@ -266,7 +266,7 @@ class Battle {
     console.error("failedAttackEffectivenessFromServer: ", xhr);
   }
 
-  displayAttack(){
+  displayAttack() {
     this.domElements.attack.text(`${this.playerPokemon.data.name} used ${this.attack.name}! ${this.attackRating}`);
     this.domElements.attack.removeClass("d-none");
 
